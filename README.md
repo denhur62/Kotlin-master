@@ -950,7 +950,25 @@
 >
 >super<y>.f()
 >
+>오버라이딩시 상위 클래스에 프로퍼티를 val로 정의한 경우에는 하위 클래스에서 var로 변경 가능하지만
 >
+>var를 val로 변경할 수는 없다. 
+>
+>커스텀 getter,setter
+>
+>>```kotlin
+>>class User(id:Int,name:String,age:Int){
+>>    val id=id
+>>    get()=field
+>>    var name=name
+>>    get()=field
+>>    set(value){
+>>        field=value
+>>    }
+>>}
+>>```
+>>
+>>
 
 ### 14.generic
 
