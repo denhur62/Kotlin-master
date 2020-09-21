@@ -1060,6 +1060,8 @@
 
 >클래스나 함수에서 사용하는 자료형을 외부에서 지정할 수 있는 기능이다.
 >
+>제너릭을 사용함으로 다른 자료형으로 형 변환시 발생 할 수 있는 오류를 줄여준다. 
+>
 >또 한, 메서드나 클래스에서 컴파일 시간에 자료형을 검사해 적당한 자료형을 선택 할 수 있도록 하기 위함.
 >
 >캐스팅 연산자는  프로그램의 속도를 저하시킬수 있는 것이 배경이다.
@@ -1067,6 +1069,60 @@
 >함수나 클래스를 선언할때 고정적인 자료형 대신 실제 자료형으로 대체되는 
 >
 >타입 패러미터를 받아 사용하는 방법이다.
+>
+>#### 형식매개변수  null 제어
+>
+>>```kotlin
+>>//class GenericNull<T: Any> {  // 특정 타입을 지정하면 null이 허용되지 않음
+>>class GenericNull<T> { // 기본적으로 null이 허용되는 형식 매개변수
+>>    fun EqualityFunc(arg1: T, arg2: T) {
+>>        println(arg1?.equals(arg2))
+>>    }
+>>}
+>>
+>>fun main() {
+>>
+>>    val obj = GenericNull<String>() // non-null로 선언됨
+>>    obj.EqualityFunc("Hello", "World") // null이 허용되지 않음
+>>
+>>    val obj2 = GenericNull<Int?>() // null가능한 형식으로 선언됨
+>>    obj2.EqualityFunc(null, 10) // null 사용
+>>}
+>>```
+>>
+>>위에 보이는 것 과 같이 null 을 허용하지 않게 하려면 Any형으로 자료형을 선언 해주면 된다. 
+>
+>#### 형식 매개변수 제한
+>
+>>```kotlin
+>>class Calc<T:Number> {} 
+>>```
+>>
+>>처럼 형식 매개변수 안에 :Number 처럼 제한을 둘 수 있으며 String이 들어오게 되면 오류가 발생한다.
+>
+>#### 다수조건의 형식 매개변수 제한하기
+>
+>>```kotlin
+>>class HandlerA:InterfaceA,InterfaceB
+>>class HandlerB:InterfaceA
+>>class ClassA<T> where T: InterfaceA,InterfaceB
+>>```
+>>
+>>위와 같은 식이 있다고 하였을때 where 의 조건은 || 가 아닌 && 이다.
+>>
+>>따라서 HandlerA는 객체 생성 가능하지만 HandlerB는 생성하지 못한다.
+>
+>
+>
+>#### 제너릭 자료형 변환
+>
+>>제너릭 클래스는 가변성을 지정하지 않으면 형식 매개변수에 상-하위 클래스가 지정되어도 서로 자료형이 
+>>
+>>변환되지 않는다. 
+>>
+>>만약 가변성을 주기 위해서는 in, out을 설정해주어야 한다. 
+>
+>
 >
 >![image-20200708164301854](images/image-20200708164301854.png)
 >
