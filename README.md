@@ -277,7 +277,7 @@
 >>
 >>자바에서의 get/set 함수에 접근하려면 다음 Companion을 꼭 써줘야 한다. 
 >>
->>JvmField는 get/set 을 생성하지 말라는 의미이다. 
+>>#### JvmField는 get/set 을 생성하지 말라는 의미이다. 
 >>
 >>![image-20200920165310422](README.assets/image-20200920165310422.png)
 >>
@@ -1121,10 +1121,97 @@
 >>변환되지 않는다. 
 >>
 >>만약 가변성을 주기 위해서는 in, out을 설정해주어야 한다. 
+>>
+>>T타입이 return 타입에 들어가면 producer, 파라미터에 들어가면 consumer라고 볼수 있다.
+>>
+>>예를 들어 List.get() 메소드는 producer이고 List의 add() || set()메소드는 consumer인 셈이다. 
+>
+>#### 가변성의 3가지 유형
+>
+>>코틀린에서는 Generic의 모든 타입은 Invariance이다. Invariance의 반대말은 Covariance인데, in/out 키워드로 Generics를 Covariance로 변경할 수 있다.
+>>
+>>
+>>
+>>공변성 : T` 이 T의 하위 자료형이면, C<T'> 는 C<T>의 하위 자료형이다. 생산자의 입장의 OUT 성질
+>>
+>>>out을 사용하게 되면 형식 매개변수를 갖는 프포퍼티는 var로 지정될 수 없고
+>>>
+>>>val만 허용한다. 이때 var를 사용하려면 private를 사용해야 한다.
+>>>
+>>>class Box<out T:Animal> (private var elem:T)
+>>>
+>>>또 한 생상자의 입장이기 때문에 소비하는 위치에 사용되면 안된다. 
+>>>
+>>>ex) fun add(t:T) {}
+>>
+>>반공변성  :T` 이 T의 하위 자료형이면, C<T> 는 C<T'>의 하위 자료형이다. 소비자의 입장의 IN성질
+>>
+>>>소비자의 입장이기 때문에 생산 하는 위치 있으면 안된다.
+>>>
+>>>ex) fun add(): T? {}
+>>
+>>무변성: C<T> 는 C<T'>는 아무 관계가 없다. 
+>>
+>>![image-20200922000047660](README.assets/image-20200922000047660.png)
+>>
+>>위와 같은 상황이 무변성인데 둘의 형식 매개변수가 다르기 때문에 데이터를 쓰지 못한다.
+>
+>#### 자료형 프로젝션
+>
+>>#### 선언 지점 변성(Declaration-site variance)
+>>
+>>>클래스를 선언하면서 클래스 자체에 가변성을 지정하는 방식으로 클래스에 in/out을 지정한다.
+>>>
+>>>이는 클래스 전체적으로 공변성이 지정되기 때문에, 클래스를 사용하는 장소에서는 따로 자료형을 지정하지 않아도 되기때문에 편리하다.
+>>>
+>>>ex) class Box<in T: Animal>
+>>
+>>#### 사용 지점 변성(use-site variance)
+>>
+>>>메서드 매개변수 or 제네릭 클래스를 생성할 때와 같이 사용 위치에서 가변성을 지정하는 방식이다.
+>>>
+>>>```kotlin
+>>>class TypeClass<T> (var parent: T)
+>>>
+>>>fun <T> print(element: TypeClass<out Parent>) {
+>>>    val parentObj: Parent = element.parent
+>>>    println(parentObj)
+>>>}
+>>>```
+>>>
+>>>사용하고자 하는 요소의 특정 자료형에 in 혹은 out을 지정해 제한하는 것이다. 
+>>
+>>#### 스타 프로잭션
+>>
+>>>스타 프로젝션`<*>`은 어떤 자료형이라도 들어올 수 있으나 구체적으로 자료형이 결정되고 난 후에는 그 
+>>>
+>>>자료형과 하위 자료형의 요소만 담을 수 있도록 제한할 수 있다.
+>>>
+>>>in으로 정의되어 있는 타입 매개변수를 *로 받으면 in Nothing으로 간주하고,
+>>>
+>>>out으로 정의되어 있는 타입 매개변수를 *로 받으면 out Any?인 것으로 간주한다.
+>>>
+>>>따라서 *을 사용할 때 그 위치에 따라 메서드 호출이 제한될 수 있습니다.
+>>>
+>>>```kotlin
+>>>class InOut<in T, out U>(t: T, u: U) {
+>>>    val prop: U = u        // U는 out 위치
+>>>
+>>>    fun fuc(t: T) {        // T는 in 위치
+>>>        print(t)
+>>>    }
+>>>}
+>>>
+>>>fun starFuc(v: InOut<*,*>) {
+>>>    v.fuc(1)    // 오류! Nothing으로 인자 처리
+>>>    print(v.prop)
+>>>}
+>>>```
 >
 >
 >
->![image-20200708164301854](images/image-20200708164301854.png)
+>
+>
 >
 >
 
