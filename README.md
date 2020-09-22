@@ -631,9 +631,9 @@
 >>>var로 서언된 프로퍼티만 가능하다.
 >>>프로퍼티에 대한 게터와 세터를 사용할 수 없다.
 >>>
->>>null을 통한 초기화를 할 수 없다.
+>>>**null을 통한 초기화를 할 수 없다.**
 >>>
->>>모든 변수에 가능 한 것이 아닌 primitive tpye에서는 불가능하다. (String 가능)
+>>>모든 변수에 가능 한 것이 아닌 primitive type에서는 불가능하다. (String 가능)
 >>>
 >>>![image-20200708202854113](images/image-20200708202854113.png)
 >>>
@@ -675,7 +675,7 @@
 >>
 >>이를 통해 무분별한 상속에 따른 복잡한 문제를 방지 할 수 있다.
 >>
->>
+>>이 때 일반적으로 사용하는 것이 **데코레이터 패턴**이다. 
 >
 >#### observable(),vetoable()
 >
@@ -870,6 +870,16 @@
 >>copy()함수를 통해 새 객체를 생성할때에는 똑같은 내용으로도 생성할 수 있고 일부 속성을 바꿀수 있다.
 >>
 >>속성을 순서대로 반환하는 **componentX()**의 자동구현
+>>
+>>데이터 클래스는 abstract,open,sealed 키워드를 사용할 수 없다. 
+>>
+>>data 클래스의 프로퍼티가 꼭 val일 필요는 없다. 
+>>
+>>하지만 데이터 클래스의 모든 프로퍼티를 읽기 전용으로 만들어 데이터 클래스를 불변(immutable) 클래스로 만드는 것이 권장한다.
+>>
+>>코틀린 컴파일러는 데이터 클래스의 인스턴스를 더 쉽게 불변 객체로 활용할 수 있게 메소드를 제공하는데, 이것이 `copy` 메소드 이다. copy 메소드는 객체를 복사하면서 일부 프로퍼티를 바꿀 수 있게 해준다.
+>>
+>>복사본은 원본과 다른 생명주기를 가지며, 복사본의 프로퍼티 값을 바꾸거나 복사본을 제거해도 프로그램에서 원본을 참조하는 다른 부분에 전혀 영향을 주지 않기 때문이다. 
 >>
 >>![image-20200708195237098](images/image-20200708195237098.png)
 >>
@@ -1379,6 +1389,8 @@
 >
 >substring(5..10)는 IntRange형식을 사용하여  일정부분만 나오는 기능을 제공한다.
 >
+>null을 허용하느냐(valueOf() 하지 않느냐(toString())의 차이
+>
 >![image-20200708165642322](images/image-20200708165642322.png)
 >
 >null 혹은 비어있거나 빈칸인지 알기 위해서 만들어진 함수들을 제공한다.
@@ -1439,12 +1451,12 @@
 >
 >```kotlin
 >object OCustomer {
->    var name = "Kildong"
->    fun greeting() = println("Hello World!")
->    val HOBBY = Hobby("Basketball")
->    init {
->        println("Init!")
->    }
+>var name = "Kildong"
+>fun greeting() = println("Hello World!")
+>val HOBBY = Hobby("Basketball")
+>init {
+>   println("Init!")
+>}
 >}
 >```
 >
@@ -1464,22 +1476,24 @@
 >
 >이는 하위 클래스를 만들지 않고도 Supermane 클래스의 fly()를 오버라이딩 변경했다.
 >
+>
+>
 >```kotlin
 >class Outer {
->    // Private function -> 반환 타입은 익명 객체 타입이 된다
->    private fun foo() = object {
->        val x: String = "x"
->    }
+>// Private function -> 반환 타입은 익명 객체 타입이 된다
+>private fun foo() = object {
+>   val x: String = "x"
+>}
 >
->    // Public function -> 반환 타입은 Any가 된다
->    fun publicFoo() = object {
->        val x: String = "x"
->    }
+>// Public function -> 반환 타입은 Any가 된다
+>fun publicFoo() = object {
+>   val x: String = "x"
+>}
 >
->    fun bar() {
->        val x1 = foo().x        // 문제없음
->        //val x2 = publicFoo().x  // ERROR: Unresolved reference 'x'
->    }
+>fun bar() {
+>   val x1 = foo().x        // 문제없음
+>   //val x2 = publicFoo().x  // ERROR: Unresolved reference 'x'
+>}
 >}
 >
 >```
@@ -1492,3 +1506,81 @@
 >
 >둘러싸여 있는 범위 내부의 변수에 접근 할 수 있다. 
 
+### 20.데코레이터 패턴(decorator)
+
+>데코레이터 패턴이란 상속을 허용하지 않는 기존 클래스 대신 사용할 수 있는 새로운 클래스(데코레이터)를 
+>
+>만들되, 기존 클래스와 같은 인터페이스를 데코레이터가 제공하게 만들고, 
+>
+>기존 클래스를 데코레이터 내부에 필드로 유지하는 것이다.
+>
+>데코레이터 패턴은 객체를 데코레이터 클래스의 객체로 감싸서 런타임 때 객체의 기능을 확장하거나 변경하는 데 사용된다.
+>
+>이것은 행위를 수정하기 위해 상속을 사용하는 것에 대해서 유연한 대안을 제공한다. 
+>
+>```kotlin
+>interface CoffeeMachine {
+>    fun makeSmallCoffee()
+>    fun makeLargeCoffee()
+>}
+>
+>class NormalCoffeeMachine : CoffeeMachine {
+>    override fun makeSmallCoffee() = println("Normal: Making small coffee")
+>
+>    override fun makeLargeCoffee() = println("Normal: Making large coffee")
+>}
+>
+>// 데코레이터
+>class EnhancedCoffeeMachine(val coffeeMachine: CoffeeMachine) : CoffeeMachine by coffeeMachine {
+>
+>    // 재정의하는 행위
+>    override fun makeLargeCoffee() {
+>        println("Enhanced: Making large coffee")
+>        coffeeMachine.makeLargeCoffee()
+>    }
+>
+>    // 확장된 행위
+>    fun makeCoffeeWithMilk() {
+>        println("Enhanced: Making coffee with milk")
+>        coffeeMachine.makeSmallCoffee()
+>        println("Enhanced: Adding milk")
+>    }
+>}
+>
+>val normalMachine = NormalCoffeeMachine()
+>val enhancedMachine = EnhancedCoffeeMachine(normalMachine)
+>
+>// 재정의하지 않은 행위
+>enhancedMachine.makeSmallCoffee()
+>// 재정의한 행위
+>enhancedMachine.makeLargeCoffee()
+>// 확장한 행위
+>enhancedMachine.makeCoffeeWithMilk()
+>```
+>
+>```kotlin
+>// outputNormal: Making small coffee
+>
+>Enhanced: Making large coffee
+>Normal: Making large coffee
+>
+>Enhanced: Making coffee with milk
+>Normal: Making small coffee
+>Enhanced: Adding milk
+>```
+>
+>다양한 패턴 : https://kimchanjung.github.io/tag/design-pattern/
+>
+>https://medium.com/hongbeomi-dev/%EB%B2%88%EC%97%AD-design-pattern-in-kotlin-3-structural-2e5e007fc0e3
+>
+>
+
+### 면접 질문
+
+>#### get()과 직접 참조(=)의 차이
+>
+>> 직접 선언하는 것(b)과 get() = ... 으로 선언하는 것(c)의 차이점은, 직접 선언하면 b 와 a 는 서로 동일한 객
+>>
+>> 체를 바라보게 되는 것이고, get() 으로 선언할 경우엔 내부적으로 함수가 호출되고, 
+>>
+>> 해당 함수의 결과 값으로 a 객체를 리턴하는 것.
