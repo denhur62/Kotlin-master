@@ -1313,10 +1313,6 @@
 >
 >
 >
->
->
->
->
 
 ### 15.Array
 
@@ -1330,13 +1326,61 @@
 >
 >ex) arrayOf<Int> || intArrayOf() 
 >
->자바 표준 라이브러리에서 제공하는 **Arrays.toString()** = 배열의 내용을 문자열로 반환이 있고
+>자바 표준 라이브러리에서 제공하는 
+>
+>**Arrays.toString(arr)**  배열의 내용을 문자열로 반환하고 
 >
 >**arr.size  , arr.sum** 과 같은 매소드를 제공한다. 
 >
 >다차원 배열에서는 **deepToString()** 을 사용한다. 
 >
 >
+>
+>배열이 일단 정의 되면 고정되기 때문에 다음과 같이 할당하거나 자를 수 있다.
+>
+>val arr2=arr1.plus(6)
+>
+>val arr3=arr1.sliceArray(0..2)
+>
+>
+>
+>#### 기타 배열 API
+>
+>```kotlin
+>arr.first() arr.last() 
+>arr.contains() arr.size arr.count() arr.average()
+>a.forEach({i-> println(i)})
+>a.forEachIndexed({i,e-> println("arr[$i] $e ")})
+>```
+>
+>#### iterator를 통한 반복문 
+>
+>```kotlin
+>fun main() {
+> var a=arrayOf(1,2,3,4,"123")
+>   var interater=a.iterator()
+>    while(interater.hasNext())
+>        println(interater.next())
+>}
+>```
+>
+>#### 배열 정렬
+>
+>>정렬한 배열을 **새로운 배열**로 생성하고 할당
+>>
+>>sortedArray() , sortedArrayDescending()
+>>
+>>람다식으로 정렬한 배열을 새로운 배열로 생성하고 할당
+>>
+>>sortedBy{it->it}
+>>
+>>**원본배열**을 수행 하려면
+>>
+>>sort() ,sortDescending()
+>>
+>>람다식으로 정렬한 배열을 **원본배열**에서 수행
+>>
+>>sortBy{it->it}
 
 ### 16.Collection 
 
