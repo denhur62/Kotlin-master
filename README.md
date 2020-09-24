@@ -573,7 +573,7 @@
 >>
 >>with는 run과 동일한 기능을 가지지만 단지 인스턴스를 참조연산자 대신 파라미터로 받는다
 >>
->>라는 차이점만 가진다. with(a) {...}
+>>라는 차이점만 가진다. with(a) {...} with은 null 검사를 하지 못하기 때문에 run을 많이 사용한다. 
 >>
 >>
 >>
@@ -1762,6 +1762,57 @@
 >자바에서의 ‘SomeClass.class’는 Class를 리턴하고 반면 코틀린에서는 SomeClass::Class를하면 KClass를 리턴합니다. 
 >
 >그렇기때문에 KClass를 Class로 바꾸어주어야하는데 이때 ‘.Java’를 이용하여 자바클래스 값을 받습니다.
+
+### 22.DSL(Domain specific Language)
+
+>DSL(Domain-Specific Language)은 특정 주제에 특화된 언어를 의미하며,
+>
+>데이터베이스에 접근하기 위한 SQL이 대표적인 DSL이다.
+>
+>화면 레이아웃을 단순화한 DSL이나 웹 접근을 단순화한 DSL 등의 많은 프레임워크가 만들어져 있다.
+>
+>코틀린에서는 고차함수와 람다식의 특징을 이용하여 읽기 좋고 간략한 코드를 만들수 있다.
+>
+>```kotlin
+>data class Person(
+>        var name: String? = null,
+>        var age: Int? = null,
+>        var job: Job? = null)
+>
+>data class Job(
+>        var category: String? = null,
+>        var position: String? = null,
+>        var extension: Int? = null)
+>
+>fun person(block: Person.() -> Unit): Person = Person().apply(block)
+>
+>fun Person.job(block: Job.() -> Unit) {    // 3번
+>    job = Job().apply(block)
+>}
+>
+>fun main() {
+>    val person = person {    // 1번
+>        name = "KaSha"
+>        age = 27
+>        job {    // 2번
+>            category = "IT"
+>            position = "Server Developer"
+>            extension = 4670
+>        }
+>    }
+>
+>    println(person)
+>}
+>```
+>
+>1번에서 person 함수를 호출하여 코드 블럭을 파라미터로 넘겨주었고 person 함수는 Person()을 통해 인스턴스를 생성하여 코드 블럭을 apply한다.
+>
+>코드 블럭을 apply하면서 name과 age를 세팅하고, 2번에서 job함수를 실행한다.
+>3번인 job함수를 살펴보면 Person 클래스의 extension 함수임을 알 수 있다.
+>
+>job 함수가 실행되면서 Job()을 통해 Job 객체를 인스턴스화 하고 job 함수의 파라미터로 전달된 코드블럭을 apply하여 모든 프로퍼티를 초기화 한다.
+
+
 
 ### 면접 질문
 
