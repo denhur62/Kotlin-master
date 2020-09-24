@@ -1372,15 +1372,44 @@
 >>
 >>람다식으로 정렬한 배열을 새로운 배열로 생성하고 할당
 >>
->>sortedBy{it->it}
+>>sortedBy{it}
+>>
+>>
 >>
 >>**원본배열**을 수행 하려면
 >>
 >>sort() ,sortDescending()
 >>
->>람다식으로 정렬한 배열을 **원본배열**에서 수행
+>>람다식으로 정렬한 배열을 **원본배열**에서 수행 
 >>
->>sortBy{it->it}
+>>sortBy{it} , minBy{} , maxBy{}
+>>
+>>
+>>
+>>#### sortWith 에서 Comparator를 통한 비교
+>>
+>>```kotlin
+>>products.sortWith(
+>>        Comparator<Product> { p1, p2 ->
+>>            when {
+>>                p1.price > p2.price -> 1
+>>                p1.price == p2.price -> 0
+>>                else -> -1
+>>            }
+>>        }
+>>)
+>>```
+>>
+>>#### compareBy를 통한 비교 name을 먼저 비교후 price를 비교
+>>
+>>```kotlin
+>>products.sortWith(compareBy({it.name}, {it.price}))
+>>products.forEach { println(it) }
+>>```
+>>
+>>#### filter{it} 을 통한 배열 필터링
+>>
+>>arr.filter{e-> e>0 }.forEach{e->print("$e ")}
 
 ### 16.Collection 
 
@@ -1400,9 +1429,15 @@
 >>
 >>listOf(1,2,3) , mutableListOf("a","b","c") 를 사용한다.
 >>
->>mutableList<T>에는 add() , remove(),removeAt(), 추가 삭제 할 수 있으며
+>>mutableList<T>에는 add() , remove(),removeAt(), indexOf() 추가 삭제 검색 할 수 있으며
 >>
 >>무작위로 섞는 shuffle() 과 정렬하는 sort() 를 제공한다.
+>>
+>>고정적인 list를 가변적적인 mutableList로 바꾸는 방법은 .toMutableList() 이다. 
+>>
+>>요소의 인덱스를 통해 List에 접근하려면 컬렉션에 .indices 멤버를 추가 하면 된다. 
+>>
+>>ex) for( i in arr.indices)
 >>
 >>![image-20200708164927507](images/image-20200708164927507.png)
 >
@@ -1526,8 +1561,6 @@
 >
 >substring(5..10)는 IntRange형식을 사용하여  일정부분만 나오는 기능을 제공한다.
 >
->null을 허용하느냐(valueOf() 하지 않느냐(toString())의 차이
->
 >![image-20200708165642322](images/image-20200708165642322.png)
 >
 >null 혹은 비어있거나 빈칸인지 알기 위해서 만들어진 함수들을 제공한다.
@@ -1540,7 +1573,9 @@
 >
 >![image-20200708170047476](images/image-20200708170047476.png)
 >
+>StringBuilder를 사용하면 문자열이 사용할 공간을 좀 더 크게 ㅈ집아서 특정 단어를 변경 할 수 있다.
 >
+>단 기존 문자열보다 느리고 메모리가 낭비되는 단점이 있다. 
 >
 >
 
@@ -1710,7 +1745,23 @@
 >
 >https://medium.com/hongbeomi-dev/%EB%B2%88%EC%97%AD-design-pattern-in-kotlin-3-structural-2e5e007fc0e3
 >
+
+### 21. Relflection(리플렉션)
+
+>코틀린에서 더블콜론(::)은 리플렉션을 위해 사용한다. 
 >
+>리플렉션이란 코드를 작성하는 시점에는 런타임상 컴파일된 바이트코드에서 내가 작성한 코드가 어디에 위치하는지 알 수 없기때문에 바이트코드를 이용해 내가 참조하려는 값을 찾기위해 사용한다.
+>
+>*SomeClass.class //클래스 그 자체를 리플렉션*
+>*someInstance.getClass() //인스턴스에서 클래스를 리플렉션*
+>
+>액티비티를 넘길때는 SomeClass::class.java와 같이 끝에 .java가 붙는것을 볼 수 있다. 
+>
+>그 이유는 자바에서 쓰는 클래스와 코틀린에서 쓰는 클래스가 다르기 떄문이다.
+>
+>자바에서의 ‘SomeClass.class’는 Class를 리턴하고 반면 코틀린에서는 SomeClass::Class를하면 KClass를 리턴합니다. 
+>
+>그렇기때문에 KClass를 Class로 바꾸어주어야하는데 이때 ‘.Java’를 이용하여 자바클래스 값을 받습니다.
 
 ### 면접 질문
 
@@ -1721,3 +1772,5 @@
 >> 체를 바라보게 되는 것이고, get() 으로 선언할 경우엔 내부적으로 함수가 호출되고, 
 >>
 >> 해당 함수의 결과 값으로 a 객체를 리턴하는 것.
+>
+>null을 허용하느냐(valueOf() 하지 않느냐(toString())의 차이
