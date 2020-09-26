@@ -958,6 +958,8 @@
 >
 >>데이터를 다루는 데에 최적화된 class로 5가지 기능을 내부적으로 자동으로 생성한다.
 >>
+>>이러한 데이터 클래스를 Data Transfer Object이라고 하여 DTO라고 줄여 말한다. 
+>>
 >>내용의 동일성을 판단하는 **equals()**의 자동구현
 >>
 >>객체의 내용에서 고유한 코드를 생성하는 **hashcode()**의 자동구현
@@ -1429,6 +1431,10 @@
 >>
 >>listOf(1,2,3) , mutableListOf("a","b","c") 를 사용한다.
 >>
+>>비어있는 리스트 생성은 emptyList<String>() 을 사용하여 생성한다. 
+>>
+>>
+>>
 >>mutableList<T>에는 add() , remove(),removeAt(), indexOf() 추가 삭제 검색 할 수 있으며
 >>
 >>무작위로 섞는 shuffle() 과 정렬하는 sort() 를 제공한다.
@@ -1439,17 +1445,29 @@
 >>
 >>ex) for( i in arr.indices)
 >>
->>![image-20200708164927507](images/image-20200708164927507.png)
+>>#### Array와 List의 차이점
+>>
+>>>List<T> 는 Array<T> 처럼 메모리 크기가 고정된 것이 아니기 때문에 자료구조에 따라 커지거나 작아질 수 있다. Array<T> ,mutableLst<T>는 무변성이기 때문에 <Int> 와 <Number>가 차이가 없다.
+>>>
+>>>하지만 List<T>는 공변성이 기때문에 List<Int>가 List<Number>에 지정될 수 있다. 
 >
 >#### Set
 >
 >>list는와 달리 중복을 허용하지 않으며 순서가 없다.
+>>
+>>setOf() || mutableSetOf() 를 통해 생성한다. 
 >>
 >>set은 인덱스로 위치를 지정하여 객체를 참조 할수는 없으며 contains()을 통해 데이터 존재 여부를
 >>
 >>알때 사용한다. 추가와 삭제는 add(), remove() 를 통해 만든다.
 >>
 >>set<out T> , mutabelSet<T> 를 통해 생성 한다.
+>>
+>>#### set 관련 클래스
+>>
+>>>- HashSet: 중복과 순서에 관계없는 데이터 집합이 필요하면 선택
+>>>- TreeSet: 중복은 보장하지 않지만 순서 보장이 필요한 데이터 집합이 필요하면 선택
+>>>- LinkedSet: 삽입된 순서대로 데이터 정렬이 필요하면 선택
 >
 >#### Map
 >
@@ -1457,11 +1475,17 @@
 >>
 >>객체의 위치가 아닌 고유의 key를 통해 존재 여부를 알아낸다.
 >>
->>추가와 삭제는 put(), remove() 를 사용한다.
+>>추가와 삭제는 **put(), remove()** 를 사용한다.
 >>
 >>![image-20200708200007442](images/image-20200708200007442.png)
 >>
 >>속성값이 key와 value로 이루어져 있고 연결시킬때는 to를 사용하여 연결한다.
+>>
+>>#### map 관련 클래스
+>>
+>>>- HashMap : 중복과 순서에 관계없는 데이터 집합이 필요하면 선택
+>>>- TreeMap: 중복은 보장하지 않지만 순서 보장이 필요한 데이터 집합이 필요하면 선택
+>>>- LinkedHMap: 삽입된 순서대로 데이터 정렬이 필요하면 선택
 >
 >#### 컬렉션에서 유용한 함수
 >
@@ -1472,6 +1496,10 @@
 >>구조의 변경까지 가능하다.
 >>
 >>forEach()는 it을 통해 순서대로 출력 할 수 있다. 
+>>
+>>forEachIndexed 인덱스를 포함해서 출력
+>>
+>>onEach()는 각 요소를 람다식을 처리하고 각 컬렉션을 반환할 수 있다. 
 >>
 >>filter{} 는 특정조건을 거를 수 있다. 
 >>
@@ -1493,6 +1521,10 @@
 >>
 >>count()는 컬렉션의 모든 아이템의 개수를 반환하고 람다식으로 할시에 조건에 맞는 갯수만 반환한다. 
 >>
+>>list를 합칠때 .union()을 사용하면 중복된 요소값은 하나만 유지되며
+>>
+>>일반적으로 + 나 .plus() 같은 경우는 중복요소 포함하여 합친다. 
+>>
 >>![image-20200708200928448](images/image-20200708200928448.png)
 >>
 >>
@@ -1507,7 +1539,19 @@
 >>
 >>![image-20200708201150452](images/image-20200708201150452.png)
 >>
+>>```kotlin
+>>data class Person(val name: String, val age: Int) 
+>>fun main(args: Array) { 
+>>    val people = listOf(Person("Alice", 31), 
+>>                        Person("Bob", 29), Person("Carol", 31)) 
+>>    println(people.groupBy { it.age }) 
+>>}
 >>
+>>```
+>>
+>>두개를 만들어 list에 넣고 list의 groupBy를 수행하면 나이에 따라 grouping이 된다. 
+>>
+>>따라서 위 코드의 return값은 Map<Int, List<Person>> 이 된다. 
 >>
 >>partition는 조건을 걸어 true ,false 그룹으로 만든다. 두 그룹 객체는 하나의 Pair라는 클래스 객체로 반환
 >>
@@ -1519,13 +1563,26 @@
 >>
 >>
 >>
->>flatMap{}은 아이템마다 만들어진 컬렉션을 합쳐서 반환하는 함수이다. 
+>>flatMap{}은 아이템마다 만들어진 컬렉션을 합쳐서 반환하는 함수이고 
+>>
+>>합쳐서 하나의 객체로 반환하여 준다. 
 >>
 >>![image-20200708201524804](images/image-20200708201524804.png)
 >>
 >>![image-20200708201531380](images/image-20200708201531380.png)
 >>
->>합쳐서 하나의 객체로 반환하여 준다. 
+>>```kotlin
+>>fun main(args: Array) {
+>>val strings = listOf("abc", "def") 
+>>println(strings.flatMap { it.toList() }) 
+>>}
+>>```
+>>
+>>flatMap은 map을 처리하고 난 다음의 결과가 list인 경우 list의 원소를 펼쳐서 하나의 list로 만드는 것
+>>
+>>it.toList()를 이용하여 원소를 map 처리한다. 결과 => list('a','b','c'), list('d','e','f')
+>>
+>>list의 원소를 flat 하게 만든다. 결과 => list("a","b","c","d","e","f")
 >>
 >>
 >>
@@ -1549,7 +1606,76 @@
 >>
 >>
 >
+>### 시퀀스(sequence)
 >
+>>시퀀스는 순차적인 컬렉션으로 요소의 크기를 특정하지 않고 나중에 결정하는 특수한 컬렉션이다. 
+>>
+>>시퀀스는 처리중에는 계산하고 있지 않다가 toList() 나 count() 같은 최종 연산에 사용
+>>
+>>```kotlin
+>>val nums: Sequence<Int> = generateSequence(1) { it + 1 }
+>> println(nums.take(10).toList())
+>>```
+>>
+>>괄호 안은 seed라고도 하며 시작 요소의 값을 나타낸다. 
+>>
+>>```kotlin
+>>val words = "The quick brown fox jumps over the lazy dog".split(" ") 
+>>val lengthsList = words.filter { println("filter: $it"); it.length > 3 } .map { println("length: ${it.length}"); it.length } .take(4) println("Lengths of first 4 words longer than 3 chars:") println(lengthsList) 
+>>// output: 
+>>// filter: The 
+>>// filter: quick 
+>>// filter: brown 
+>>// filter: fox 
+>>// filter: jumps 
+>>// filter: over 
+>>// filter: the 
+>>// filter: lazy 
+>>// filter: dog 
+>>// length: 5 
+>>// length: 5 
+>>// length: 5 
+>>// length: 4 
+>>// length: 4 
+>>// Lengths of first 4 words longer than 3 chars: 
+>>// [5, 5, 5, 4]
+>>
+>>
+>>```
+>>
+>>위의 식같은 경우에는 시퀀스를 사용하지않아 병렬처리가 안되는 것을 볼 수 있다. 
+>>
+>>만약 asSequence를 사용하면
+>>
+>>```kotlin
+>>val words = "The quick brown fox jumps over the lazy dog".split(" ")
+>>
+>> //convert the List to a Sequence 
+>>
+>>val wordsSequence = words.asSequence() 
+>>
+>>val lengthsSequence = wordsSequence.filter { println("filter: $it"); it.length > 3 } .map { println("length: ${it.length}"); it.length } .take(4) 
+>>
+>>println("Lengths of first 4 words longer than 3 chars") 
+>>
+>>// terminal operation: obtaining the result as a List println(lengthsSequence.toList()) 
+>>// output: 
+>>// Lengths of first 4 words longer than 3 chars 
+>>// filter: The 
+>>// filter: quick 
+>>// length: 5 
+>>// filter: brown 
+>>// length: 5 
+>>// filter: fox 
+>>// filter: jumps
+>>// length: 5 
+>>// filter: over 
+>>// length: 4 // [5, 5, 5, 4]
+>>```
+>>
+>> 위에 보이는 것과 같이 병렬처리가 되는것을 알 수 있다.
+>>
+>>
 
 ### 17.String
 
