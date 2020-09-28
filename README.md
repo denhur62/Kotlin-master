@@ -548,9 +548,6 @@
 >>
 >>![image-20200707230719140](images/image-20200707230719140.png)
 >>
->>람다 with reciver: https://medium.com/@mook2_y2/%EC%BD%94%ED%8B%80%EB%A6%B0-%EC%9E%85%EB%AC%B8-%EC%8A%A4%ED%84%B0%EB%94%94-16-lambda-with-receiver-e265044206f9
->>
->>
 >
 >#### 일급 객체
 >
@@ -1773,7 +1770,7 @@
 >
 >여러개의 루틴을 동시에 실행하여 동기적으로 결과값을 얻고 싶으면 비동기 처리인 코루틴을 통해 얻어야 한다.
 >
->제어 범위 실행범위를 지정할 수 있다.
+>제어 범위, 실행범위를 지정할 수 있다.
 >
 >GloblaScope: 프로그램 어디서나 제어,동작이 가능한 기본범위를 말하며 
 >
@@ -1782,6 +1779,12 @@
 >![image-20200708210014607](images/image-20200708210014607.png)
 >
 >![image-20200708210225812](images/image-20200708210225812.png)
+>
+>코루틴을 만들때 쓰이는 Dispatcher 는 어떤 쓰레드에서 실행될지를 결정하는 값이다. 
+>
+>일반적으로 프로그램은 UI가 동작하는 메인쓰레드 및 이와 분리되어 백그라운드에서 다른 일들을 실행하는 쓰레드로 이루어져 있다. 코루틴을 생성할 때 플랫폼에서 제공할 수 있는 쓰레드 중 하나를 Dispatcher 로 선택할 수 있는 것있다. 
+>
+>각각의 플랫폼, 즉 안드로이드나 웹서버를 작성하는 ktor나 기타 여러 플랫폼에 따라서 프레임워크 측에서 직접 Dispatcher 설정을 제공하는 경우가 있다.
 >
 >launch 나 async를 통해 새로운 코루틴을 생성할수 있다. 
 >
@@ -1804,6 +1807,13 @@
 >![image-20200708210459590](images/image-20200708210459590.png)
 >
 >위의 3가지 함수는 루틴의 대기가 가능한 구문안에서만 동작이 가능하다. 
+>
+>코루틴 중단에 cancel()을 통해 코루틴을 중단할 수 있다. 
+>
+>이 때 2가지 상황이 발생하는데 
+>
+>>1. 코루틴 내부의 dealy()함수 또는 yield() 함수가 사용된 위치까지 수행된 뒤 종료
+>>2. cancel()로 인해 속성인 isActive가 false가 되므로 이를 확인하여 수동으로 종료이다.
 >
 >
 >
@@ -2114,33 +2124,33 @@
 >
 >```kotlin
 >data class Person(
->        var name: String? = null,
->        var age: Int? = null,
->        var job: Job? = null)
+>   var name: String? = null,
+>   var age: Int? = null,
+>   var job: Job? = null)
 >
 >data class Job(
->        var category: String? = null,
->        var position: String? = null,
->        var extension: Int? = null)
+>   var category: String? = null,
+>   var position: String? = null,
+>   var extension: Int? = null)
 >
 >fun person(block: Person.() -> Unit): Person = Person().apply(block)
 >
 >fun Person.job(block: Job.() -> Unit) {    // 3번
->    job = Job().apply(block)
+>job = Job().apply(block)
 >}
 >
 >fun main() {
->    val person = person {    // 1번
->        name = "KaSha"
->        age = 27
->        job {    // 2번
->            category = "IT"
->            position = "Server Developer"
->            extension = 4670
->        }
->    }
+>val person = person {    // 1번
+>   name = "KaSha"
+>   age = 27
+>   job {    // 2번
+>       category = "IT"
+>       position = "Server Developer"
+>       extension = 4670
+>   }
+>}
 >
->    println(person)
+>println(person)
 >}
 >```
 >
@@ -2150,8 +2160,13 @@
 >3번인 job함수를 살펴보면 Person 클래스의 extension 함수임을 알 수 있다.
 >
 >job 함수가 실행되면서 Job()을 통해 Job 객체를 인스턴스화 하고 job 함수의 파라미터로 전달된 코드블럭을 apply하여 모든 프로퍼티를 초기화 한다.
+>
+>람다 with reciver: https://medium.com/@mook2_y2/%EC%BD%94%ED%8B%80%EB%A6%B0-%EC%9E%85%EB%AC%B8-%EC%8A%A4%ED%84%B0%EB%94%94-16-lambda-with-receiver-e265044206f9
 
+### Receiver
 
+>https://medium.com/til-kotlin-ko/kotlin%EC%9D%98-extension%EC%9D%80-%EC%96%B4%EB%96%BB%EA%B2%8C-%EB%8F%99%EC%9E%91%ED%95%98%EB%8A%94%EA%B0%80-part-3-587cc37e7337
+>
 
 ### 면접 질문
 
