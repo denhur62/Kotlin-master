@@ -1959,6 +1959,26 @@
 >>>>여기서 주의깊게 봐야 할 점은 Thread.currentThread().name 값이 DefaultDispatcher 
 >>>>
 >>>>라는 것이다. 
+>>
+>>### 실행 상태의판단
+>>
+>>>만일 코드를 중단하기 위해 코루틴에 조건식을 넣으려고 하면 조건식에 의해 루틴이 중단되지 않는다.
+>>>
+>>>```kotlin
+>>>val job=GlobalScope.launch{
+>>>	while(i<5)
+>>>    	println("cont")
+>>>}
+>>>delay(1300L)
+>>>```
+>>>
+>>>와 같은 식이 있다면 연산이 마무리 되기전까지는 조건식에 의해 루틴이 중단되지않는다.
+>>>
+>>>만약 취소 시그널을 받아 루프를 중단하려면 소스코드에서 (i<5) 보다는 (isActive)로 
+>>>
+>>>바꾸어 주면 된다. 
+>>>
+>>>
 
 ### 19.Singleton Pattern
 
@@ -2165,8 +2185,69 @@
 
 ### Receiver
 
->https://medium.com/til-kotlin-ko/kotlin%EC%9D%98-extension%EC%9D%80-%EC%96%B4%EB%96%BB%EA%B2%8C-%EB%8F%99%EC%9E%91%ED%95%98%EB%8A%94%EA%B0%80-part-3-587cc37e7337
+>리시버의 뜻으로 
 >
+>객체
+>
+>객체 간의 메세지 전달
+>
+>메세지의 처리결과 
+>
+>로 나타낼 수 있다. Receiver는 말 그대로 메세지 수신자에 해당한다. 즉 해당 메소드를 가지는 인스턴스로
+>
+>이해하면 편할 것이다.
+>
+>## Function literal with Receiver
+>
+>```kotlin
+>// lambda with receiver
+>val sum: Int.(Int) -> Int = { other -> plus(other) }
+>// function type with receiver
+>val sum = fun Int.(other: Int): Int = this + other
+>```
+>
+>말 그대로 리시버를 포함하고 있는 람다(`A.(B) -> C`) 또는 익명 함수 형식(`fun T.(param: P) : R`)을 뜻한다는 것을 이해할 수 있을 것입니다.
+>
+>### Function literal vs Function literal with Receiver
+>
+>>간단하게 이 두가지 extension의 차이는 리시버를 블록에 넘길 때 컨텍스트 그 자체인 `this` 로 넘길 것인지 아니면 인자 `it` 로 넘길 것인지에 대한 차이뿐이다.
+>
+>#### 그럼 왜 굳이 왜 리시버를 가지는 형태가 필요한가??
+>
+>>*A lambda with receiver is something that you can pass to another function, so that the other function would call it, and pass the receiver object that you would be able to access in the body of the lambda. An extension function is something that you can only call directly.*
+>>
+>>간략하게 이야기하자면, `this` 사용 유무를 가장 중요한 기준으로 사용한다는 뜻이다.
+>
+>#### Without Receiver vs With Receiver
+>
+>>```kotlin
+>>fun Int.withoutReceiver(block: (it: Int) -> Unit) = block(this)
+>>fun main(args: Array<String>) {
+>>    100.withoutReceiver {
+>>        print(it.hashCode())
+>>    }
+>>}
+>>```
+>>
+>>위의 코드는 인자의 람다가 리시버를 가지지 않기 때문에 람다 블럭 내에서 인자 `it`으로 접근한다.
+>>
+>>
+>>
+>>```kotlin
+>>fun Int.withReceiver(block: Int.() -> Unit) = block()fun main(args: Array<String>) {
+>>    100.withReceiver {
+>>        print(hashCode())
+>>    }
+>>}
+>>```
+>>
+>>`withReceiver`에서 받은 람다 블럭을 호출하면 자연스럽게 컨텍스트(`this`)가 따라가는 것을 확인할 수 있다.
+>
+>따라서 리시버를 가진 함수 리터럴은 컨텍스트 전달 외 그리 특별한 기능을 수행하지 않는다.
+>
+>다만, this 컨텍스트의 전파를 통한 코드 가독성과 구조적인 개선 가능성은 접근 방식에 따라
+>
+>실질적인 효과를 기대할 수 있다.
 
 ### 면접 질문
 
