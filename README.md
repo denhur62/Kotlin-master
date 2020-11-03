@@ -353,6 +353,8 @@
 >>
 >>자바에서의 get/set 함수에 접근하려면 다음 Companion을 꼭 써줘야 한다. 
 >>
+>>![image-20201103193617701](README.assets/image-20201103193617701.png)
+>>
 >>#### JvmField는 get/set 을 생성하지 말라는 의미이다. 
 >>
 >>![image-20200920165310422](README.assets/image-20200920165310422.png)
@@ -362,10 +364,10 @@
 >>```kotlin
 >>class KCustomer {
 >>companion object {
->>   const val LEVEL = "INTERMEDIATE"
->>   @JvmStatic fun login() = println("Login...") // 어노테이션 표기 사용
->>   @JvmStatic val score = 3
->>   @JvmField val JOB = KJob()
+>>const val LEVEL = "INTERMEDIATE"
+>>@JvmStatic fun login() = println("Login...") // 어노테이션 표기 사용
+>>@JvmStatic val score = 3
+>>@JvmField val JOB = KJob()
 >>}
 >>}
 >>```
@@ -2144,7 +2146,7 @@
 >
 >그 이유는 자바에서 쓰는 클래스와 코틀린에서 쓰는 클래스가 다르기 떄문이다.
 >
->자바에서의 ‘SomeClass.class’는 Class를 리턴하고 반면 코틀린에서는 SomeClass::Class를하면 KClass를 리턴합니다. 
+>자바에서의 ‘SomeClass.class’는 Class를 리턴하고 반면 코틀린에서는 SomeClass::Class를하면 KClass를 리턴한다. 
 >
 >그렇기때문에 KClass를 Class로 바꾸어주어야하는데 이때 ‘.Java’를 이용하여 자바클래스 값을 받습니다.
 
