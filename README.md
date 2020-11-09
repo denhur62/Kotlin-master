@@ -140,7 +140,7 @@
 >
 >>JAVA에서는 JVM(Java Virtual Machine)이 구성된 JRE(Java Runtime Environment)가 제공되며, 그 구성 요소 중 하나인 Garbage Collection(이하 GC)이 자동으로 사용하지 않는 객체를 파괴한다.
 >>
->> 'stop-the-world'란, GC를 실행하기 위해 JVM이 애플리케이션 실행을 멈추는 것이다. 어떤 GC 알고리즘을 사용하더라도 'stop-the-world'는 발생하게 되는데, 대개의 경우 GC 튜닝은 이 'stop-the-world' 시간을 줄이는 것이다.
+>>'stop-the-world'란, GC를 실행하기 위해 JVM이 애플리케이션 실행을 멈추는 것이다. 어떤 GC 알고리즘을 사용하더라도 'stop-the-world'는 발생하게 되는데, 대개의 경우 GC 튜닝은 이 'stop-the-world' 시간을 줄이는 것이다.
 >>
 >>GC를 해도 더이상 사용 가능한 메모리 영역이 없는데 계속 메모리를 할당하려고 하면, OutOfMemoryError가 발생한다.
 >>
@@ -255,6 +255,18 @@
 >>>>>   - compaction(조각 모음)은 하지 않는다.
 >>>>>     - 따라서, Sweep을 하다 보면 단편화가 발생한다.
 >>>>>     - Free List를 사용해 단편화를 최소화한다.
+>>>>
+>>>>#### 4.G1 GC
+>>>>
+>>>>>### G1 Garbage Collector
+>>>>>
+>>>>>```java
+>>>>>-XX:+UseG1GC
+>>>>>```
+>>>>>
+>>>>>Java7부터 사용가능하다 . 여러 CPU와 아주 큰 memory에서 효과적인 GC를 활용하기 위함이다. Oracle문서에 따르면 heap size가 6GB보다 클 경우 GC의 latency를 0.5sec이하로 낮출수 있다고 한다.([Oracle G1 GC문서](https://www.oracle.com/technetwork/tutorials/tutorials-1876574.html)) 
+>>>>>
+>>>>>Java9에서는 default GC로 설정되어 있다.(이전까지는 Parallel GC가 default)
 
 ## 기본개념
 
