@@ -2525,3 +2525,29 @@
 >> 해당 함수의 결과 값으로 a 객체를 리턴하는 것.
 >
 >null을 허용하느냐(valueOf() 하지 않느냐(toString())의 차이
+
+#### 코테준비 보면서 감명깊은 코드 
+
+>[체육복 문제](https://programmers.co.kr/learn/courses/30/lessons/42862)
+>
+>```kotlin
+>class Solution {
+>        fun solution(n: Int, lost: IntArray, reserve: IntArray): Int {
+>
+>            var answer = n
+>            var lostSet = lost.toSet() - reserve.toSet()
+>            var reserveSet = (reserve.toSet() - lost.toSet()) as MutableSet
+>
+>            for (i in lostSet) {
+>                when {
+>                    i + 1 in reserveSet -> reserveSet.remove(i + 1)
+>                    i - 1 in reserveSet -> reserveSet.remove(i - 1)
+>                    else -> answer--
+>                }
+>            }
+>            return answer
+>        }
+>}
+>```
+>
+>
