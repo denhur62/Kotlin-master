@@ -2,35 +2,43 @@
 
 ## idea  단축키
 
->Run : Alt+4
+>#### 화면창 띄위기
 >
->Debug: Alt+5
+>>Run : Alt+4
+>>
+>>Debug: Alt+5
 >
->Ctrl+shift+f10 : 바로 컴파일
+>#### 코딩시 유용한 단축키
 >
->Alt+shift+f10: 파일을 골라서 컴파일
+>>Ctrl+Alt+s= Setting
+>>
+>>Ctrl+shift+f10 : 바로 컴파일 혹은 Ctrl+Ctrl 해서 실행시킬 파일 찾아서 실행
+>>
+>>Alt+shift+f10: 파일을 골라서 컴파일
+>>
+>>Ctrl+b: 선언부 찾기 
+>>
+>>F2 : 틀린곳으로 바로가기 
+>>
+>>Alt+F7: 선언을 검색하는 대신 어떤 항목이 사용된 위치를 검색하고 싶을 때 사용
+>>
+>>Ctrl+Shift +p : 코틀린이 자료형을 추론한 값을 알고 싶으면 변수를 클릭
+>>
+>>**Ctrl+Shift+Enter:** 중괄호를 대신 쳐줌
 >
->String 키워드를 클릭하고 Ctrl+b 를 눌러보면 String.kt파일이 열린다.
+>#### 디버깅
 >
->
->
->자료형이 지정하지 않은 변수는 값을 할당해야 함.
->
->코틀린이 자동으로 자료형을 추론한 값을 알고 싶으면 변수를 클릭하고
->
->Ctrl+Shift +p 를 클릭.
->
->
->
->디버깅시에 하고자하는 줄에 브레이크포인트를 가르키는 회색에 빨간 점을 찍거나
->
->단축키 Ctrl+f8 을 누름
->
->그 다음 디버깅을 시작 하는 단축키 Shift + f9 을 누르고 한줄 씩 실행하려면
->
->f8키를 누른다.
->
->종료시에는 Ctrl+ f2 를 누른다.
+>>디버깅시에 하고자하는 줄에 브레이크포인트를 가르키는 회색에 빨간 점을 찍거나
+>>
+>>단축키 Ctrl+f8 을 누름
+>>
+>>그 다음 디버깅을 시작 하는 단축키 Shift + f9 을 누르고 한줄 씩 실행하려면
+>>
+>>f8키를 누른다.
+>>
+>>종료시에는 Ctrl+ f2 를 누른다.
+>>
+>>
 
 #### Java 매개변수 객체로 전달
 
@@ -2528,26 +2536,44 @@
 
 #### 코테준비 보면서 감명깊은 코드 
 
->[체육복 문제](https://programmers.co.kr/learn/courses/30/lessons/42862)
+>set을 활용하고 -를 통해 중복값 제거하기
 >
 >```kotlin
 >class Solution {
->        fun solution(n: Int, lost: IntArray, reserve: IntArray): Int {
+>   fun solution(n: Int, lost: IntArray, reserve: IntArray): Int {
 >
->            var answer = n
->            var lostSet = lost.toSet() - reserve.toSet()
->            var reserveSet = (reserve.toSet() - lost.toSet()) as MutableSet
+>       var answer = n
+>       var lostSet = lost.toSet() - reserve.toSet()
+>       var reserveSet = (reserve.toSet() - lost.toSet()) as MutableSet
 >
->            for (i in lostSet) {
->                when {
->                    i + 1 in reserveSet -> reserveSet.remove(i + 1)
->                    i - 1 in reserveSet -> reserveSet.remove(i - 1)
->                    else -> answer--
->                }
->            }
->            return answer
->        }
+>       for (i in lostSet) {
+>           when {
+>               i + 1 in reserveSet -> reserveSet.remove(i + 1)
+>               i - 1 in reserveSet -> reserveSet.remove(i - 1)
+>               else -> answer--
+>           }
+>       }
+>       return answer
+>   }
 >}
 >```
 >
+>꼬리재귀함수를 이용한 재귀함수
 >
+>```kotlin
+>
+>class Solution {
+>    fun solution(n: Int, m: Int): IntArray {
+>        val gcd = gcd(n, m)
+>
+>        return intArrayOf(gcd, n * m / gcd)
+>    }
+>
+>    tailrec fun gcd(a: Int, b: Int): Int = if (b == 0) a else gcd(b, a % b)
+>}
+>```
+>
+>toInt(3) -> 3진수를 10진수로 바꾸기
+>
+>toString(3)->10진수 숫자를 3진수 String으로 바꾸기
+
