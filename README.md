@@ -12,6 +12,8 @@
 >
 >>Ctrl+Alt+s= Setting
 >>
+>>Shift+shift= 전체 검색
+>>
 >>Ctrl+shift+f10 : 바로 컴파일 혹은 Ctrl+Ctrl 해서 실행시킬 파일 찾아서 실행
 >>
 >>Alt+shift+f10: 파일을 골라서 컴파일
@@ -30,13 +32,25 @@
 >
 >>디버깅시에 하고자하는 줄에 브레이크포인트를 가르키는 회색에 빨간 점을 찍거나
 >>
->>단축키 Ctrl+f8 을 누름
+>>디버깅을 시작 하는 단축키 **Shift + f9** 
 >>
->>그 다음 디버깅을 시작 하는 단축키 Shift + f9 을 누르고 한줄 씩 실행하려면
+>>한줄 씩 실행(step over): f8
 >>
->>f8키를 누른다.
+>>실행하고 있는 라인 이동(step into):f7
 >>
->>종료시에는 Ctrl+ f2 를 누른다.
+>>
+>>
+>>종료:Ctrl+ f2
+>>
+>>![image-20201122193911207](README.assets/image-20201122193911207.png)
+>>
+>>resume: 다음 break point로 이동
+>>
+>>force step into: stop into랑 비슷하나 프로퍼티 함수에도 들어간다.
+>
+>#### 인텔리제이 깃허브 연동하기
+>
+>>project폴더에서 마우스 우클릭 -> GIt ->Repository ->commit Directly
 >>
 >>
 
