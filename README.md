@@ -1054,6 +1054,14 @@
 >>
 >>```
 >
+>>```
+>>
+>>```
+>
+>>```
+>>
+>>```
+>
 >>```kotlin
 >>fun main() {
 >>```
@@ -1071,6 +1079,14 @@
 >>max = 5
 >>println(max) // 10
 >>}
+>
+>>```
+>>
+>>```
+>
+>>```
+>>
+>>```
 >
 >>```
 >>
@@ -1232,6 +1248,14 @@
 >>>
 >>>```
 >
+>>>```
+>>>
+>>>```
+>
+>>>```
+>>>
+>>>```
+>
 >>>Person 으로 만들 수있는 인스턴스는 String으로 올수 있는 값의 개수 * Int 로 올수 있는 값의 개수 * 
 >
 >>>String으로 올수 있는 값의 개수 라고 볼 수 있다. 
@@ -1285,6 +1309,14 @@
 >>>       throw IllegalStateException("Not RGB")
 >>>   }
 >>>}
+>
+>>>```
+>>>
+>>>```
+>
+>>>```
+>>>
+>>>```
 >
 >>>```
 >>>
@@ -1579,6 +1611,14 @@
 >>    
 >>    ```
 >
+>>    ```
+>>    
+>>    ```
+>
+>>    ```
+>>    
+>>    ```
+>
 >>위에 보이는 것 과 같이 null 을 허용하지 않게 하려면 Any형으로 자료형을 선언 해주면 된다. 
 >
 >#### 형식 매개변수 제한
@@ -1677,6 +1717,14 @@
 >>>
 >>>```
 >
+>>>```
+>>>
+>>>```
+>
+>>>```
+>>>
+>>>```
+>
 >>>사용하고자 하는 요소의 특정 자료형에 in 혹은 out을 지정해 제한하는 것이다. 
 >
 >>#### 스타 프로잭션
@@ -1705,6 +1753,14 @@
 >>>v.fuc(1)    // 오류! Nothing으로 인자 처리
 >>>print(v.prop)
 >>>}
+>
+>>>```
+>>>
+>>>```
+>
+>>>```
+>>>
+>>>```
 >
 >>>```
 >>>
@@ -1949,14 +2005,6 @@
 >>}
 >>```
 >
->>```
->>
->>```
->
->>```
->>
->>```
->
 >>두개를 만들어 list에 넣고 list의 groupBy를 수행하면 나이에 따라 grouping이 된다. 
 >
 >>따라서 위 코드의 return값은 Map<Int, List<Person>> 이 된다. 
@@ -2049,55 +2097,36 @@
 >>// [5, 5, 5, 4]
 >>```
 >
->
->>```
->>
->>```
->
->>```
->>
->>```
->
 >>위의 식같은 경우에는 시퀀스를 사용하지않아 병렬처리가 안되는 것을 볼 수 있다. 
 >
 >>만약 asSequence를 사용하면
 >
 >>```kotlin
 >>val words = "The quick brown fox jumps over the lazy dog".split(" ")
->>```
->
->> //convert the List to a Sequence 
->
->>val wordsSequence = words.asSequence() 
->
->>val lengthsSequence = wordsSequence.filter { println("filter: $it"); it.length > 3 } .map { println("length: ${it.length}"); it.length } .take(4) 
->
->>println("Lengths of first 4 words longer than 3 chars") 
->
->>// terminal operation: obtaining the result as a List println(lengthsSequence.toList()) 
->>// output: 
->>// Lengths of first 4 words longer than 3 chars 
->>// filter: The 
->>// filter: quick 
->>// length: 5 
->>// filter: brown 
->>// length: 5 
->>// filter: fox 
->>// filter: jumps
->>// length: 5 
->>// filter: over 
->>// length: 4 // [5, 5, 5, 4]
->
->>```
+>>> //convert the List to a Sequence 
 >>
->>```
->
->>```
+>>>val wordsSequence = words.asSequence() 
 >>
+>>>val lengthsSequence = wordsSequence.filter { println("filter: $it"); it.length > 3 } .map { println("length: ${it.length}"); it.length } .take(4) 
+>>
+>>>println("Lengths of first 4 words longer than 3 chars") 
+>>
+>>>// terminal operation: obtaining the result as a List println(lengthsSequence.toList()) 
+>>>// output: 
+>>>// Lengths of first 4 words longer than 3 chars 
+>>>// filter: The 
+>>>// filter: quick 
+>>>// length: 5 
+>>>// filter: brown 
+>>>// length: 5 
+>>>// filter: fox 
+>>>// filter: jumps
+>>>// length: 5 
+>>>// filter: over 
+>>>// length: 4 // [5, 5, 5, 4]
 >>```
 >
 >> 위에 보이는 것과 같이 병렬처리가 되는것을 알 수 있다.
->
 >
 
 ### 17.String
@@ -2238,6 +2267,14 @@
 >>>    
 >>>    ```
 >
+>>>    ```
+>>>    
+>>>    ```
+>
+>>>    ```
+>>>    
+>>>    ```
+>
 >>>Context Switching이 일어나면 한 스레드가 계속실행되다가 다른 스레드로 넘어가는 걸 볼 수 있다.
 >
 >>>같은 스레드 안의 코루틴들은 기본적으로는 스레드처럼 선점을 하려고 하지 않는다. 한 코루틴이 끝나면 
@@ -2276,6 +2313,14 @@
 >>>   println("Work 2 finished. ${elapsed}ms is elapsed.")
 >>>}
 >>>}
+>
+>>>```
+>>>
+>>>```
+>
+>>>```
+>>>
+>>>```
 >
 >>>```
 >>>
@@ -2335,6 +2380,14 @@
 >>>>1111111111111111212121212121212121212121121121211221212121212121212121212122121212122121212121212121212121212121212121212121212121212121212121212121212121212121212121211121212121212222222222222222222222222222222222111111111111111122222222222221121212212121212121212121212121121212121121221211112212122212212222112222222222222222222222222111111111111111111111111111111111111111112121211111111111111111112222222222222111111111112222222222222222222222222222222222111111111111111111111111111111111111111111222222112222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222221122222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222211222211111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
 >
 >>>>Wating... (main)
+>
+>>>>```
+>>>>
+>>>>```
+>
+>>>>```
+>>>>
+>>>>```
 >
 >>>>```
 >>>>
@@ -2691,4 +2744,26 @@
 >toInt(3) -> 3진수를 10진수로 바꾸기
 >
 >toString(3)->10진수 숫자를 3진수 String으로 바꾸기
+
+컬렉션 자료형 분류 및 생성 핼퍼 함수
+
+List			listOf			mutableListOf(),arrayListOf(),linkedListOf()
+
+Set			setOf			mutableSetOf(),hashSetOf(),linkedSetOf(),sortedSetOf() (TreeSet)
+
+Map		 mapOf		mutableMapOf(),hashMapOf(),linkedMapOf(),sortedMapOf()
+
+size,isEmpty(),contains(),containsAll()
+
+forEach,forEachIndexed(withIndexed), onEach{} (값 반환), fold,reduce{} (요소에 식적용)
+
+filter(),filterIndexed(), filterKeys(), filterValues()
+
+indexOf(), elementAt(), elementAtOrElse()
+
+sortedArray() , sortedArrayDeseding 은 배열에만 사용가능 하고 리턴값 존재
+
+sort() , sortDescending() 은 배열에만 사용가능하고 리턴값 존재안함
+
+reversed(),sorted(), sortedDescending()은 반환값이 List 이다. 
 
